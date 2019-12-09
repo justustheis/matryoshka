@@ -12,7 +12,7 @@ class BladeDirectiveTest extends TestCase
     {
         $directive = $this->createNewCacheDirective();
 
-        $isCached = $directive->setUp($post = $this->makePost());
+        $isCached = $directive->setUp("testView", $post = $this->makePost());
 
         $this->assertFalse($isCached);
 
@@ -21,7 +21,7 @@ class BladeDirectiveTest extends TestCase
         $cachedFragment = $directive->tearDown();
 
         $this->assertEquals('<div>fragment</div>', $cachedFragment);
-        $this->assertTrue($this->doll->has($post));
+        $this->assertTrue($this->doll->has("testView" . $post->getCacheKey()));
     }
 
     /** @test */
@@ -30,7 +30,7 @@ class BladeDirectiveTest extends TestCase
         $doll = $this->prophesize(RussianCaching::class);
         $directive = new BladeDirective($doll->reveal());
 
-        $doll->has('foo')->shouldBeCalled();
+        $doll->has('foo', 'views')->shouldBeCalled();
         $directive->setUp('foo');
 
         ob_end_clean(); // Since we're not doing teardown.
@@ -43,8 +43,8 @@ class BladeDirectiveTest extends TestCase
         $directive = new BladeDirective($doll->reveal());
 
         $collection = collect(['one', 'two']);
-        $doll->has(md5($collection))->shouldBeCalled();
-        $directive->setUp($collection);
+        $doll->has("testKey".md5($collection), 'views')->shouldBeCalled();
+        $directive->setUp("testKey", $collection);
 
         ob_end_clean(); // Since we're not doing teardown.
     }
@@ -56,24 +56,11 @@ class BladeDirectiveTest extends TestCase
         $directive = new BladeDirective($doll->reveal());
 
         $post = $this->makePost();
-        $doll->has('Post/1-' . $post->updated_at->timestamp)->shouldBeCalled();
-        $directive->setUp($post);
+        $doll->has('testKey' . 'Post/1-' . $post->updated_at->timestamp, 'views')->shouldBeCalled();
+        $directive->setUp("testKey", $post);
 
         ob_end_clean(); // Since we're not doing teardown.
     }
-
-    /** @test */
-    function it_can_use_a_string_to_override_the_models_cache_key()
-    {
-        $doll = $this->prophesize(RussianCaching::class);
-        $directive = new BladeDirective($doll->reveal());
-
-        $doll->has('override-key')->shouldBeCalled();
-        $directive->setUp($this->makePost(), 'override-key');
-
-        ob_end_clean(); // Since we're not doing teardown.
-    }
-
 
     /**
      * @test
@@ -83,7 +70,7 @@ class BladeDirectiveTest extends TestCase
     {
         $directive = $this->createNewCacheDirective();
 
-        $directive->setUp(new UnCacheablePost);
+        $directive->setUp("testKey", new UnCacheablePost);
     }
 
     protected function createNewCacheDirective()

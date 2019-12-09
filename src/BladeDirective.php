@@ -14,11 +14,18 @@ class BladeDirective
     protected $cache;
 
     /**
-     * A list of model cache keys.
+     * A list of cache keys.
      *
      * @param  array  $keys
      */
     protected $keys = [];
+
+    /**
+     * A list of cache tags.
+     *
+     * @param  array  $tags
+     */
+    protected $tags = [];
 
     /**
      * Create a new instance.
@@ -33,18 +40,20 @@ class BladeDirective
     /**
      * Handle the @cache setup.
      *
-     * @param  mixed        $model
-     * @param  string|null  $key
+     * @param  string      $key
+     * @param  mixed|null  $model
+     * @param  string      $tags
      *
-     * @return
+     * @return boolean
      * @throws \Exception
      */
-    public function setUp($model, $key = null)
+    public function setUp(string $key, $model = null, $tags = "views")
     {
-        $this->keys[] = $key = $this->normalizeKey($model, $key);
+        $this->keys[] = $key = $this->normalizeKey($key, $model);
+        $this->tags[] = $tags;
         ob_start();
 
-        return $this->cache->has($key);
+        return $this->cache->has($key, $tags);
     }
 
     /**
@@ -53,37 +62,41 @@ class BladeDirective
     public function tearDown()
     {
         return $this->cache->put(
-            array_pop($this->keys), ob_get_clean()
+            array_pop($this->keys), ob_get_clean(), array_pop($this->tags)
         );
     }
 
     /**
      * Normalize the cache key.
      *
-     * @param  mixed        $item
-     * @param  string|null  $key
+     * @param  string  $key
+     * @param  null    $model
      *
      * @return string
      * @throws \Exception
      */
-    protected function normalizeKey($item, $key = null)
+    protected function normalizeKey(string $key, $model = null)
     {
-        // If the user wants to provide their own cache
-        // key, we'll opt for that.
-        if (is_string($item) || is_string($key)) {
-            return is_string($item) ? $item : $key;
+        if ( ! is_string($key)) {
+            throw new Exception('The key must be of type string');
         }
 
-        // Otherwise we'll try to use the item to calculate
+        // If the user wants to provide their own cache
+        // key, we'll opt for that.
+        if (is_string($key) && $model == null) {
+            return $key;
+        }
+
+        // Otherwise we'll try to use the model to calculate
         // the cache key, itself.
-        if (is_object($item) && method_exists($item, 'getCacheKey')) {
-            return $item->getCacheKey();
+        if (is_object($model) && method_exists($model, 'getCacheKey')) {
+            return $key . $model->getCacheKey();
         }
 
         // If we're dealing with a collection, we'll 
         // use a hashed version of its contents.
-        if ($item instanceof \Illuminate\Support\Collection) {
-            return md5($item);
+        if ($model instanceof \Illuminate\Support\Collection) {
+            return $key . md5($model);
         }
 
         throw new Exception('Could not determine an appropriate cache key.');

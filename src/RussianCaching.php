@@ -28,15 +28,16 @@ class RussianCaching
      *
      * @param  mixed   $key
      * @param  string  $fragment
+     * @param  string  $tags
      *
-     * @return
+     * @return mixed
      */
-    public function put($key, $fragment)
+    public function put($key, $fragment, $tags = 'views')
     {
         $key = $this->normalizeCacheKey($key);
 
         return $this->cache
-            ->tags('views')
+            ->tags($tags)
             ->rememberForever($key, function () use ($fragment) {
                 return $fragment;
             });
@@ -45,16 +46,17 @@ class RussianCaching
     /**
      * Check if the given key exists in the cache.
      *
-     * @param  mixed  $key
+     * @param  mixed   $key
+     * @param  string  $tags
      *
-     * @return
+     * @return mixed
      */
-    public function has($key)
+    public function has($key, $tags = 'views')
     {
         $key = $this->normalizeCacheKey($key);
 
         return $this->cache
-            ->tags('views')
+            ->tags($tags)
             ->has($key);
     }
 
