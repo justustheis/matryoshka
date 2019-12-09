@@ -24,7 +24,7 @@ abstract class TestCase extends PHPUnit_Framework_TestCase
         DB::schema()->create('posts', function ($table) {
             $table->increments('id');
             $table->string('title');
-            $table->timestamps();  
+            $table->timestamps();
         });
     }
 
@@ -34,11 +34,11 @@ abstract class TestCase extends PHPUnit_Framework_TestCase
         $post->title = 'Some title';
         $post->save();
 
-        return $post; 
+        return $post;
     }
 }
 
 class Post extends \Illuminate\Database\Eloquent\Model
 {
-    use Laracasts\Matryoshka\Cacheable;
+    use JustusTheis\Matryoshka\Cacheable;
 }

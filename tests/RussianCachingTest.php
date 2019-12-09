@@ -1,6 +1,6 @@
 <?php
 
-use Laracasts\Matryoshka\RussianCaching;
+use JustusTheis\Matryoshka\RussianCaching;
 
 class RussianCachingTest extends TestCase
 {

@@ -1,5 +1,5 @@
 {
-    "name": "laracasts/matryoshka",
+    "name": "justustheis/matryoshka",
     "description": "Russian Doll Caching for Laravel.",
     "license": "MIT",
     "keywords": ["laravel", "cache"],
@@ -7,6 +7,10 @@
         {
             "name": "Jeffrey Way",
             "email": "jeffrey@laracasts.com"
+        },
+        {
+            "name": "Justus Theis",
+            "email": "j.theis@ds-systems.eu"
         }
     ],
     "require": {
@@ -14,7 +18,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Laracasts\\Matryoshka\\": "src/"
+            "JustusTheis\\Matryoshka\\": "src/"
         }
     },
     "autoload-dev": {

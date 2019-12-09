@@ -19,7 +19,7 @@ composer require laracasts/matryoshka
 For your Laravel app, open `config/app.php` and, within the `providers` array, append:
 
 ```
-Laracasts\Matryoshka\MatryoshkaServiceProvider::class
+JustusTheis\Matryoshka\MatryoshkaServiceProvider::class
 ```
 
 This will bootstrap the package into Laravel.
@@ -77,10 +77,10 @@ Consider the following fragment:
 @endcache
 ```
 
-In this example, we're passing the `$post` object, itself, to the `@cache` directive - rather than a string. The package will then look for a `getCacheKey()` method on the model. We've already done that work for you; just have your Eloquent model use the `Laracasts\Matryoshka\Cacheable` trait, like so:
+In this example, we're passing the `$post` object, itself, to the `@cache` directive - rather than a string. The package will then look for a `getCacheKey()` method on the model. We've already done that work for you; just have your Eloquent model use the `JustusTheis\Matryoshka\Cacheable` trait, like so:
 
 ```php
-use Laracasts\Matryoshka\Cacheable;
+use JustusTheis\Matryoshka\Cacheable;
 
 class Post extends Eloquent
 {
@@ -111,7 +111,7 @@ Luckily, Laravel offers this "touch" functionality out of the box. Consider a `N
 
 namespace App;
 
-use Laracasts\Matryoshka\Cacheable;
+use JustusTheis\Matryoshka\Cacheable;
 use Illuminate\Database\Eloquent\Model;
 
 class Note extends Model
@@ -185,7 +185,7 @@ Yes. Let's say you have:
 @endcache
 ```
 
-Behind the scenes, we'll look for a `getCacheKey` method on the model. Now, as mentioned above, you can use the `Laracasts\Matryoshka\Cacheable` trait to instantly import this functionality. Alternatively, you may pass a second argument to the `@cache` directive, like this:
+Behind the scenes, we'll look for a `getCacheKey` method on the model. Now, as mentioned above, you can use the `JustusTheis\Matryoshka\Cacheable` trait to instantly import this functionality. Alternatively, you may pass a second argument to the `@cache` directive, like this:
 
 ```html
 @cache($post, 'my-custom-key')

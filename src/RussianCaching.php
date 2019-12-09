@@ -1,6 +1,6 @@
 <?php
 
-namespace Laracasts\Matryoshka;
+namespace JustusTheis\Matryoshka;
 
 use Illuminate\Contracts\Cache\Repository as Cache;
 
@@ -26,8 +26,10 @@ class RussianCaching
     /**
      * Put to the cache.
      *
-     * @param mixed  $key
-     * @param string $fragment
+     * @param  mixed   $key
+     * @param  string  $fragment
+     *
+     * @return
      */
     public function put($key, $fragment)
     {
@@ -43,7 +45,9 @@ class RussianCaching
     /**
      * Check if the given key exists in the cache.
      *
-     * @param mixed $key
+     * @param  mixed  $key
+     *
+     * @return
      */
     public function has($key)
     {
@@ -57,7 +61,9 @@ class RussianCaching
     /**
      * Normalize the cache key.
      *
-     * @param mixed $key
+     * @param  mixed  $key
+     *
+     * @return mixed
      */
     protected function normalizeCacheKey($key)
     {

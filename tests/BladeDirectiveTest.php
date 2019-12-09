@@ -1,7 +1,7 @@
 <?php
 
-use Laracasts\Matryoshka\RussianCaching;
-use Laracasts\Matryoshka\BladeDirective;
+use JustusTheis\Matryoshka\RussianCaching;
+use JustusTheis\Matryoshka\BladeDirective;
 
 class BladeDirectiveTest extends TestCase
 {
@@ -41,7 +41,7 @@ class BladeDirectiveTest extends TestCase
     {
         $doll = $this->prophesize(RussianCaching::class);
         $directive = new BladeDirective($doll->reveal());
-        
+
         $collection = collect(['one', 'two']);
         $doll->has(md5($collection))->shouldBeCalled();
         $directive->setUp($collection);
@@ -55,7 +55,7 @@ class BladeDirectiveTest extends TestCase
         $doll = $this->prophesize(RussianCaching::class);
         $directive = new BladeDirective($doll->reveal());
 
-        $post = $this->makePost(); 
+        $post = $this->makePost();
         $doll->has('Post/1-' . $post->updated_at->timestamp)->shouldBeCalled();
         $directive->setUp($post);
 
@@ -75,8 +75,8 @@ class BladeDirectiveTest extends TestCase
     }
 
 
-    /** 
-     * @test 
+    /**
+     * @test
      * @expectedException Exception
      * */
     function it_throws_an_exception_if_it_cannot_determine_the_cache_key()
@@ -98,4 +98,6 @@ class BladeDirectiveTest extends TestCase
     }
 }
 
-class UnCacheablePost extends \Illuminate\Database\Eloquent\Model {}
+class UnCacheablePost extends \Illuminate\Database\Eloquent\Model
+{
+}
