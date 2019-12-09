@@ -2,9 +2,9 @@
 
 use Illuminate\Database\Capsule\Manager as DB;
 
-abstract class TestCase extends PHPUnit_Framework_TestCase
+abstract class TestCase extends \PHPUnit\Framework\TestCase
 {
-    public function setUp()
+    public function setUp() : void
     {
         $this->setUpDatabase();
         $this->migrateTables();

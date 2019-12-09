@@ -62,12 +62,10 @@ class BladeDirectiveTest extends TestCase
         ob_end_clean(); // Since we're not doing teardown.
     }
 
-    /**
-     * @test
-     * @expectedException Exception
-     * */
+   /** @test */
     function it_throws_an_exception_if_it_cannot_determine_the_cache_key()
     {
+        $this->expectException(Exception::class);
         $directive = $this->createNewCacheDirective();
 
         $directive->setUp("testKey", new UnCacheablePost);
