@@ -2,7 +2,7 @@
 
 Matryoshka is a package for Laravel that provides Russian-Doll caching for your view logic.
 
-> Want to learn how this exact package was made from scratch? [See Laracasts.com](https://laracasts.com/series/russian-doll-caching-in-laravel).
+> This package is a fork of [laracasts/matryoshka](https://github.com/laracasts/matryoshka)
 
 ## Installation
 
@@ -11,7 +11,7 @@ Matryoshka is a package for Laravel that provides Russian-Doll caching for your 
 From the command line, run:
 
 ```
-composer require laracasts/matryoshka
+composer require justustheis/matryoshka
 ```
 
 ### Step 2: Service Provider
